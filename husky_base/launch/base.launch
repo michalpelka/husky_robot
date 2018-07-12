@@ -27,9 +27,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <launch>
     <arg name="port" default="$(optenv HUSKY_PORT /dev/prolific)" />
-
+    <arg name="tf_prefix" default="husky" />
+    
     <!-- Load robot description -->
-    <include file="$(find husky_description)/launch/description.launch"/>
+    <include file="$(find husky_description)/launch/description.launch">
+      <arg name="tf_prefix" value="$(arg tf_prefix)"/>
+    </include>
 
     <!-- Husky harware driver -->
     <node pkg="husky_base" type="husky_node" name="husky_node">
@@ -47,7 +50,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </node>
 
     <!-- Differential controller parameters and basic localization -->
-    <include file="$(find husky_control)/launch/control.launch" />
+    <include file="$(find husky_control)/launch/control.launch">
+      <arg name="tf_prefix" value="$(arg tf_prefix)"/>
+    </include>
 
     <!--Teleop -->
     <include file="$(find husky_control)/launch/teleop.launch" />
